@@ -1,4 +1,66 @@
 import streamlit as st
+import pandas as pd
+import random
+import string
+import smtplib
+from email.message import EmailMessage
+
+# --- SENDER CONFIG (Use your App Password here) ---
+EMAIL_ADDRESS = "your-league-email@gmail.com"
+EMAIL_PASSWORD = "your-16-char-app-password"
+
+# --- HELPER FUNCTIONS ---
+def generate_code():
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+
+def send_access_email(receiver_email, code):
+    msg = EmailMessage()
+    msg['Subject'] = "Your Pokémon League Access Key 🗝️"
+    msg['From'] = EMAIL_ADDRESS
+    msg['To'] = receiver_email
+    msg.set_content(f"Welcome to the League! Your 6-character access key is: {code}")
+    
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+        smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+        smtp.send_message(msg)
+
+# --- LOGIN LOGIC ---
+if 'authenticated' not in st.session_state:
+    st.session_state.authenticated = False
+
+# AUTO-LOGIN FOR YOU (JOSHUA)
+# Streamlit can check your specific URL parameters or you can just use a "Master Key"
+if not st.session_state.authenticated:
+    st.title("🛡️ Pokémon League Gatekeeper")
+    
+    tab1, tab2 = st.tabs(["Login", "Request Access"])
+    
+    with tab1:
+        user_key = st.text_input("Enter your 6-character key", type="password")
+        if st.button("Enter League"):
+            # Master key for Joshua, or check against a list
+            if user_key == "JOSHUA_BOSS_99" or user_key in st.sidebar.get("generated_keys", []):
+                st.session_state.authenticated = True
+                st.rerun()
+            else:
+                st.error("Invalid key.")
+
+    with tab2:
+        st.write("New here? Enter your email and Joshua will approve your code.")
+        new_email = st.text_input("Your Email Address")
+        if st.button("Request Key"):
+            new_code = generate_code()
+            try:
+                send_access_email(new_email, new_code)
+                st.success(f"Key sent to {new_email}! Check your inbox.")
+                # Note: In a real app, you'd save 'new_code' to a database/Google Sheet here
+            except Exception as e:
+                st.error("Failed to send email. Check your Gmail App Password settings.")
+    st.stop()
+
+# --- THE ACTUAL APP STARTS HERE ---
+st.title("🏆 Welcome to the League, Joshua!")
+import streamlit as st
 
 # --- USER ACCESS KEYS ---
 # You can change these to any random strings/numbers you want
