@@ -1,3 +1,5 @@
+import streamlit as st
+import pandas as pd
 # --- JOSHUA'S ADMIN PANEL (Only you see this) ---
 if st.sidebar.checkbox("Admin Login"):
     admin_pass = st.sidebar.text_input("Master Password", type="password")
