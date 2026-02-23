@@ -53,16 +53,26 @@ if not st.session_state.authenticated:
     st.title("🛡️ Pokémon League Gatekeeper")
     
     tab1, tab2 = st.tabs(["Login", "Request Access"])
+
+    # --- THE LOGIN SCREEN ---
+if not st.session_state.auth:
+    st.title("🛡️ Poke-Discord Entrance")
     
-    with tab1:
-        user_key = st.text_input("Enter your 6-character key", type="password")
-        if st.button("Enter League"):
-            # Master key for Joshua, or check against a list
-            if user_key == "JOSHUA_BOSS_99" or user_key in st.sidebar.get("generated_keys", []):
-                st.session_state.authenticated = True
-                st.rerun()
-            else:
-                st.error("Invalid key.")
+    key_input = st.text_input("Access Key", type="password")
+    
+    if st.button("Connect"):
+        # ADD YOUR OWN PERMANENT PASSWORD HERE
+        if key_input == "Pixel234.": 
+            st.session_state.auth = True
+            st.success("Welcome, Creator!")
+            st.rerun()
+        # This keeps the keys for the other boys working
+        elif key_input.upper() in access_keys.values():
+            st.session_state.auth = True
+            st.rerun()
+        else:
+            st.error("Invalid Key.")
+    st.stop()
 
     with tab2:
         st.write("New here? Enter your email and Joshua will approve your code.")
