@@ -1,4 +1,21 @@
-import streamlit as st
+# --- JOSHUA'S ADMIN PANEL (Only you see this) ---
+if st.sidebar.checkbox("Admin Login"):
+    admin_pass = st.sidebar.text_input("Master Password", type="password")
+    if admin_pass == "YOUR_SECRET_BOSS_CODE":
+        st.title("👨‍💻 Joshua's Control Panel")
+        
+        # 1. Generate a Code
+        target_email = st.text_input("Enter Friend's Email")
+        if st.button("Generate & Email Key"):
+            new_key = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+            
+            # Send the email (using the email code I gave you before)
+            send_access_email(target_email, new_key)
+            
+            # SAVE TO GOOGLE SHEET (Crucial step!)
+            # conn.write_to_sheet(target_email, new_key) 
+            st.success(f"Key {new_key} sent to {target_email}!")
+            import streamlit as st
 import pandas as pd
 import random
 import string
