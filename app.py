@@ -1,5 +1,17 @@
 import streamlit as st
 import pandas as pd
+import random
+import string
+
+# --- THE FIX: Initialize 'auth' if it doesn't exist yet ---
+if 'auth' not in st.session_state:
+    st.session_state.auth = False
+
+# Now the rest of your app can check st.session_state.auth without crashing!
+if not st.session_state.auth:
+    st.title("🛡️ Poke-Discord Entrance")
+    # ... (the rest of your login code)
+
 # --- JOSHUA'S ADMIN PANEL (Only you see this) ---
 if st.sidebar.checkbox("Admin Login"):
     admin_pass = st.sidebar.text_input("Master Password", type="password")
