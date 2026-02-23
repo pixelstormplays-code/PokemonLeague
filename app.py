@@ -1,4 +1,37 @@
 import streamlit as st
+
+# --- USER ACCESS KEYS ---
+# You can change these to any random strings/numbers you want
+access_keys = {
+    "Joshua": "J882",
+    "Archie": "A192",
+    "Harry": "H773",
+    "Leo": "L004",
+    "Stanley": "S551"
+}
+
+# --- THE LOGIN SCREEN ---
+if 'authenticated' not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    st.title("🛡️ The Boys Pokémon League")
+    st.write("This site is private. Please enter your Access Key to enter.")
+    
+    user_input = st.text_input("Access Key", type="password")
+    
+    if st.button("Unlock App"):
+        if user_input in access_keys.values():
+            st.session_state.authenticated = True
+            st.success("Access Granted! Welcome to the League.")
+            st.rerun() # Refresh the page to show the app
+        else:
+            st.error("Invalid Key. Message Joshua on WhatsApp to get yours.")
+    st.stop() # Stops the rest of the app from loading until they log in
+
+# --- EVERYTHING BELOW THIS ONLY SHOWS AFTER LOGIN ---
+st.sidebar.title(f"Welcome back!")
+# ... (Rest of your Leaderboard, Strategy Guide, and Pokedex code goes here)import streamlit as st
 import pandas as pd
 
 # --- APP CONFIG ---
