@@ -78,6 +78,9 @@ if not st.session_state.auth:
             st.session_state.auth = True
             st.success("Welcome, Creator!")
             st.rerun()
+            if key_input == "Pixel234.": # Pick any secret word you want!
+    st.session_state.auth = True
+    st.rerun()
         # This keeps the keys for the other boys working
         elif key_input.upper() in access_keys.values():
             st.session_state.auth = True
